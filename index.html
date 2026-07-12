@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purdue Fort Wayne Men's Basketball — Built Here</title>
+<meta property="og:title" content="Purdue Fort Wayne Men's Basketball">
+<meta property="og:description" content="The winningest mid-major in the state of Indiana. Come see why. #GoDons">
+<meta property="og:image" content="img/coliseum.jpg">
+<meta name="robots" content="noindex"> <!-- REMOVE at official launch -->
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Permanent+Marker&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ PFW BRAND ============ */
+  :root {
+    --bg: #0e0d0c;
+    --bg2: #161412;
+    --gold: #C2A14D;
+    --gold-hot: #F0CE73;
+    --gold-deep: #8a6d2f;
+    --paper: #EDE6D6;
+    --ink: #131211;
+    --body: #c9c2b4;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--body); font-family:'Oswald',sans-serif; overflow-x:hidden; }
+  img { max-width:100%; display:block; }
+
+  body::after { content:''; position:fixed; inset:0; pointer-events:none; opacity:.05; z-index:99;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  section { padding:72px 22px; max-width:900px; margin:0 auto; position:relative; }
+  .kick { font:600 14px 'Oswald'; letter-spacing:.45em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+  h2 { font:400 clamp(44px, 9vw, 76px)/1 'Anton'; text-transform:uppercase; color:var(--paper); margin-bottom:18px; letter-spacing:.01em; }
+  h2 .g { color:var(--gold); }
+  h3.sub { font:400 clamp(26px, 5.5vw, 38px)/1.1 'Anton'; text-transform:uppercase; color:var(--gold); margin:52px 0 14px; }
+  p.lead { font:400 18px/1.65 'Oswald'; color:var(--body); max-width:680px; }
+  p.txt { font:400 16px/1.65 'Oswald'; color:var(--body); max-width:680px; margin-top:12px; }
+  .marker { font-family:'Permanent Marker'; color:var(--gold-hot); }
+
+  .rv { opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
+  .rv.on { opacity:1; transform:none; }
+
+  /* ============ HERO ============ */
+  #hero { min-height:100svh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; max-width:none; padding:90px 22px 60px;
+    background:radial-gradient(130% 90% at 50% 0%, #221e17 0%, var(--bg) 60%); position:relative; overflow:hidden; }
+  #hero .wall { position:absolute; inset:-40px; opacity:.08; transform:rotate(-6deg); pointer-events:none; }
+  #hero .wall div { font:900 17vw/0.95 'Archivo Black'; color:transparent; -webkit-text-stroke:2px var(--gold); white-space:nowrap; text-transform:uppercase; }
+  #hero .hi { position:relative; z-index:2; }
+  #hero .greet { font:400 26px 'Permanent Marker'; color:var(--gold-hot); margin-bottom:14px; min-height:32px; }
+  #hero h1 { font:400 clamp(58px, 13vw, 130px)/0.95 'Anton'; text-transform:uppercase; color:var(--paper); }
+  #hero h1 .g { background:linear-gradient(180deg, var(--gold-hot), var(--gold) 50%, var(--gold-deep));
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  #hero .tag { margin-top:20px; font:600 clamp(15px, 3.4vw, 22px) 'Oswald'; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); }
+  #hero .sub { margin-top:8px; font:500 15px 'Oswald'; letter-spacing:.12em; color:#8d8676; text-transform:uppercase; }
+  #hero .down { margin-top:52px; color:var(--gold); font-size:26px; animation:bob 1.6s infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(9px)} }
+
+  /* ============ COMPONENTS ============ */
+  .bigstats { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:26px; margin:44px 0 8px; }
+  .bs .n { font:400 clamp(56px, 10vw, 84px)/1 'Anton'; color:var(--paper); }
+  .bs .n span { color:var(--gold); }
+  .bs .l { margin-top:6px; font:600 14px 'Oswald'; letter-spacing:.14em; text-transform:uppercase; color:#8d8676; }
+
+  .chart { margin-top:40px; }
+  .chart .row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .chart .tlogo { width:28px; height:28px; object-fit:contain; flex-shrink:0; }
+  .chart .team { width:118px; flex-shrink:0; font:600 13px 'Oswald'; letter-spacing:.08em; text-transform:uppercase; color:var(--body); text-align:right; }
+  .chart .bar { height:30px; background:#2a261f; position:relative; flex:1; }
+  .chart .bar i { position:absolute; inset:0 auto 0 0; width:0; background:#4a4438; transition:width 1.1s cubic-bezier(.2,.7,.2,1); }
+  .chart .row.us .bar i { background:linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-hot)); }
+  .chart .row.us .team { color:var(--gold-hot); font-weight:700; }
+  .chart .val { width:44px; font:700 15px 'Oswald'; color:var(--body); }
+  .chart .row.us .val { color:var(--gold-hot); }
+  .chart .note { margin-top:10px; font:500 12px 'Oswald'; letter-spacing:.1em; text-transform:uppercase; color:#6d675a; }
+
+  .paper { background:var(--paper); color:var(--ink); padding:34px 30px; margin:48px -6px 0; transform:rotate(-1.2deg);
+    clip-path:polygon(0 7%, 2% 0, 98% 2%, 100% 10%, 99% 92%, 96% 100%, 3% 98%, 0 90%);
+    box-shadow:0 16px 46px rgba(0,0,0,.5); }
+  .paper .t { font:900 clamp(22px, 5vw, 34px)/1.2 'Archivo Black'; text-transform:uppercase; }
+  .paper .s { margin-top:10px; font:600 15px/1.5 'Oswald'; color:#4a4438; letter-spacing:.04em; }
+
+  .ranks { margin-top:36px; border-top:1px solid #2e2a22; }
+  .rank { display:flex; align-items:baseline; gap:18px; padding:16px 4px; border-bottom:1px solid #2e2a22; }
+  .rank .no { font:400 44px/1 'Anton'; color:var(--gold); min-width:86px; }
+  .rank .tx { font:500 16px/1.4 'Oswald'; }
+  .rank .tx b { color:var(--paper); }
+
+  .featpros { display:grid; grid-template-columns:1fr; gap:16px; margin-top:38px; }
+  .pro { background:var(--bg2); border-left:4px solid var(--gold); padding:22px 24px; }
+  .pro .pimg { margin:-22px -24px 16px; height:250px; overflow:hidden; }
+  .pro .pimg img { width:100%; height:100%; object-fit:cover; object-position:center 25%; filter:saturate(.92); }
+  .pro .nm { font:900 22px 'Archivo Black'; text-transform:uppercase; color:var(--paper); }
+  .pro .where { font:600 13px 'Oswald'; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin:4px 0 8px; }
+  .pro .why { font:400 15px/1.55 'Oswald'; }
+  .pro.small .nm { font-size:17px; }
+  .pro.small { padding:16px 20px; }
+  .prolist { margin-top:28px; font:500 14px/2 'Oswald'; letter-spacing:.03em; color:#9a937f; }
+  .prolist b { color:var(--body); }
+
+  /* development growth cards */
+  .devgrid { margin-top:38px; display:grid; gap:16px; }
+  .dev { background:var(--bg2); border-top:3px solid var(--gold); padding:24px; }
+  .dev .pimg { margin:-24px -24px 18px; height:240px; overflow:hidden; }
+  .dev .pimg img { width:100%; height:100%; object-fit:cover; object-position:center 20%; }
+  .dev .nm { font:900 24px 'Archivo Black'; text-transform:uppercase; color:var(--paper); }
+  .dev .tagline { font:600 12px 'Oswald'; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:4px 0 14px; }
+  .dev .only { font:600 18px/1.5 'Oswald'; color:var(--paper); border-left:4px solid var(--gold); padding:10px 0 10px 16px; margin-bottom:20px; background:linear-gradient(90deg, rgba(194,161,77,.09), transparent 70%); }
+  .dev .only b { color:var(--gold-hot); }
+  .grow { display:flex; align-items:baseline; gap:14px; padding:13px 0; border-top:1px solid #2e2a22; }
+  .grow .lbl { font:600 12px 'Oswald'; letter-spacing:.14em; text-transform:uppercase; color:#8d8676; width:104px; flex-shrink:0; }
+  .grow .arc { font:400 26px/1 'Anton'; color:var(--paper); white-space:nowrap; }
+  .grow .arc span { color:#6d675a; font-size:20px; padding:0 6px; }
+  .grow .delta { margin-left:auto; font:400 34px/1 'Anton'; color:var(--gold-hot); }
+  @media (min-width:880px) { .devgrid { grid-template-columns:1fr 1fr; } }
+
+  /* photo gallery grid */
+  .gal { margin-top:36px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .gal .slot { margin-top:0; aspect-ratio:4/3; }
+  /* .fit galleries letterbox instead of cropping — for mixed shapes / TV graphics */
+  .gal.fit .slot { background:#0b0a09; }
+  .gal.fit .slot img { object-fit:contain; }
+
+  /* quote blocks */
+  .quote { background:var(--bg2); border-left:4px solid var(--gold); padding:26px 28px; margin-top:26px;
+    display:flex; gap:22px; align-items:flex-start; }
+  .quote .qimg { width:96px; height:96px; border-radius:50%; object-fit:cover; object-position:center top;
+    flex-shrink:0; border:3px solid var(--gold); }
+  .quote .q { font:400 19px/1.65 'Oswald'; color:var(--body); font-style:italic; }
+  .quote .who { margin-top:14px; font:400 22px 'Permanent Marker'; color:var(--gold-hot); }
+  .quote .whosub { font:600 12px 'Oswald'; letter-spacing:.18em; text-transform:uppercase; color:#8d8676; margin-top:2px; }
+
+  .opps { margin-top:34px; display:flex; flex-wrap:wrap; gap:10px; }
+  .opp { font:700 14px 'Oswald'; letter-spacing:.1em; text-transform:uppercase; color:var(--body);
+    border:1px solid #3a352b; padding:8px 14px 8px 10px; display:flex; align-items:center; gap:9px; }
+  .opp img { width:22px; height:22px; object-fit:contain; }
+  .opp.hit { color:var(--ink); background:var(--gold); border-color:var(--gold); font-weight:700; }
+
+  .years { margin-top:34px; border-top:1px solid #2e2a22; }
+  .yr { display:flex; gap:20px; padding:14px 4px; border-bottom:1px solid #2e2a22; align-items:baseline; }
+  .yr .y { font:400 22px/1 'Anton'; color:var(--gold); min-width:92px; }
+  .yr .o { font:500 15px/1.5 'Oswald'; }
+  .yr .o b { color:var(--paper); }
+
+  .checks { margin-top:30px; display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:10px 26px; }
+  .chk { display:flex; gap:12px; font:500 16px/1.5 'Oswald'; }
+  .chk::before { content:'✓'; color:var(--gold); font-weight:700; }
+
+  .staff { margin-top:38px; display:grid; gap:16px; }
+  .coach { background:var(--bg2); border-top:3px solid var(--gold); padding:24px; }
+  .coach .pimg { margin:-24px -24px 18px; aspect-ratio:4/3; overflow:hidden; background:#000; }
+  .coach .pimg img { width:100%; height:100%; object-fit:cover; object-position:center top; }
+  .coach .pimg.zoom img { transform:scale(1.14); }
+  .coach .nm { font:900 20px 'Archivo Black'; text-transform:uppercase; color:var(--paper); }
+  .coach .role { font:600 12px 'Oswald'; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:3px 0 8px; }
+  .coach .bio { font:400 15px/1.6 'Oswald'; }
+  .staff.support { margin-top:16px; }
+  .staff.support .coach { border-top-width:2px; }
+
+  .slot { margin-top:40px; aspect-ratio:16/10; background:
+    linear-gradient(200deg, rgba(194,161,77,.22), rgba(14,13,12,.6)), var(--bg2);
+    display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .slot span { font:900 15px 'Archivo Black'; letter-spacing:.2em; color:#4a4438; text-transform:uppercase; }
+  .slot img { width:100%; height:100%; object-fit:cover; }
+  .slotcap { margin-top:12px; font:600 12px 'Oswald'; letter-spacing:.2em; text-transform:uppercase; color:#6d675a; }
+
+  /* video embeds — URLs get pasted into the VIDEOS object at the bottom of this file */
+  .video { margin-top:36px; aspect-ratio:16/9; background:#181613; border:1px dashed #3f3a2f;
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:20px; }
+  .video .ph { font:600 13px/1.8 'Oswald'; letter-spacing:.18em; text-transform:uppercase; color:#6d675a; }
+  .video iframe { width:100%; height:100%; border:0; }
+
+  .btnlink { display:inline-block; margin-top:30px; padding:16px 38px; background:linear-gradient(135deg, var(--gold-hot), var(--gold-deep));
+    color:var(--ink); font:700 15px 'Oswald'; letter-spacing:.16em; text-transform:uppercase; text-decoration:none;
+    box-shadow:6px 6px 0 #000; }
+
+  .div { max-width:none; padding:0; height:70px; background:var(--bg2);
+    clip-path:polygon(0 40%, 100% 0, 100% 60%, 0 100%); opacity:.5; }
+
+  #cta { text-align:center; padding-bottom:110px; }
+  #cta h2 { font-size:clamp(48px, 11vw, 92px); }
+  #cta .hash { margin-top:34px; font:400 28px 'Permanent Marker'; color:var(--gold-hot); }
+
+  footer { text-align:center; padding:26px; font:500 12px 'Oswald'; letter-spacing:.2em; text-transform:uppercase; color:#565043; }
+
+  /* ============ DESKTOP / WEB VIEW ============ */
+  @media (min-width:880px) {
+    section { padding:110px 40px; max-width:1000px; }
+    .featpros { grid-template-columns:1fr 1fr; }
+    .featpros.three { grid-template-columns:1fr 1fr 1fr; }
+    .staff { grid-template-columns:1fr 1fr; }
+    .slot { aspect-ratio:16/9; }
+    .paper { padding:44px 52px; margin-left:0; margin-right:0; }
+    .rank .no { min-width:120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<div id="hero">
+  <div class="wall" aria-hidden="true">
+    <div>MASTODONS MASTODONS</div><div>MASTODONS MASTODONS</div><div>MASTODONS MASTODONS</div>
+    <div>MASTODONS MASTODONS</div><div>MASTODONS MASTODONS</div><div>MASTODONS MASTODONS</div><div>MASTODONS MASTODONS</div>
+  </div>
+  <div class="hi">
+    <div class="greet" id="greet"></div>
+    <h1>PURDUE<br>FORT <span class="g">WAYNE</span></h1>
+    <div class="tag">The Winningest Mid-Major in Indiana</div>
+    <div class="sub">Men's Basketball · Horizon League · Fort Wayne, IN</div>
+    <div class="down">▼</div>
+  </div>
+</div>
+
+<!-- ============ THIS SEASON ============ -->
+<!-- UPDATE ANNUALLY: rewrite this whole section each summer with the freshest season -->
+<section id="season">
+  <div class="kick rv">2025-26</div>
+  <h2 class="rv">LAST SEASON,<br>WE <span class="g">DELIVERED.</span></h2>
+  <p class="lead rv">A fifth consecutive winning season. A road win over an ACC program. The league's leading scorer in our backcourt. The tradition continued — winningest mid-major in the state of Indiana.</p>
+  <div class="ranks rv">
+    <div class="rank"><div class="no">W</div><div class="tx"><b>At Notre Dame, 72–69</b> — walked into an ACC building and walked out with it</div></div>
+    <div class="rank"><div class="no">20.4</div><div class="tx"><b>Corey Hadnot II PPG</b> — top 25 in the nation, led the Horizon League in scoring, First Team All-Horizon League</div></div>
+    <div class="rank"><div class="no">5</div><div class="tx"><b>Straight winning seasons</b></div></div>
+    <div class="rank"><div class="no">240</div><div class="tx"><b>Wins over the past 13 years</b> — more than any mid-major in Indiana</div></div>
+  </div>
+  <div class="slot rv"><img src="img/craig-nd.jpg" alt="Deandre Craig brings the ball up at Notre Dame"></div>
+  <div class="slotcap rv">Deandre Craig at Notre Dame — final: PFW 72, ND 69</div>
+  <div class="slot rv"><img src="img/hadnot.jpg" alt="Corey Hadnot II"></div>
+  <div class="slotcap rv">Corey Hadnot II — the Horizon League's leading scorer</div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ WINNING ============ -->
+<section id="winning">
+  <div class="kick rv">The Resume</div>
+  <h2 class="rv">WE <span class="g">WIN.</span></h2>
+  <p class="lead rv">No mid-major in the state of Indiana has won more games than us. Not Indiana State. Not Valpo. Not Ball State. It's not close, and it's not new.</p>
+
+  <!-- UPDATE ANNUALLY: wins totals + season counts -->
+  <div class="bigstats rv">
+    <div class="bs"><div class="n">240<span>+</span></div><div class="l">Wins, last 13 seasons</div></div>
+    <div class="bs"><div class="n">7</div><div class="l">Postseason appearances in 13 yrs</div></div>
+    <div class="bs"><div class="n">2<span>x</span></div><div class="l">League champions (2016 · 2022)</div></div>
+  </div>
+
+  <!-- UPDATE ANNUALLY: Indiana mid-major wins chart -->
+  <div class="chart rv" id="chart">
+    <div class="row us"><img class="tlogo" src="img/logos/pfw.png" alt=""><div class="team">Purdue Fort Wayne</div><div class="bar"><i data-w="100"></i></div><div class="val">240</div></div>
+    <div class="row"><img class="tlogo" src="img/logos/instate.png" alt=""><div class="team">Indiana State</div><div class="bar"><i data-w="89"></i></div><div class="val">214</div></div>
+    <div class="row"><img class="tlogo" src="img/logos/valpo.png" alt=""><div class="team">Valparaiso</div><div class="bar"><i data-w="89"></i></div><div class="val">214</div></div>
+    <div class="row"><img class="tlogo" src="img/logos/ballst.png" alt=""><div class="team">Ball State</div><div class="bar"><i data-w="80"></i></div><div class="val">192</div></div>
+    <div class="row"><img class="tlogo" src="img/logos/evansville.png" alt=""><div class="team">Evansville</div><div class="bar"><i data-w="71"></i></div><div class="val">170</div></div>
+    <div class="row"><img class="tlogo" src="img/logos/iuindy.png" alt=""><div class="team">IU Indy</div><div class="bar"><i data-w="48"></i></div><div class="val">116</div></div>
+    <div class="note">Wins by Indiana mid-majors, last 13 seasons</div>
+  </div>
+
+  <h3 class="sub rv">Championship pedigree</h3>
+  <p class="txt rv"><b style="color:var(--paper)">2022 — Horizon League Regular Season Champions.</b> Ranked #22 in the Mid-Major Top 25, earned a CBI Tournament invitation in Daytona Beach — the program's sixth postseason appearance in nine seasons. Three All-Horizon League selections: Jarred Godfrey (First Team), Jalon Pipkins (Third Team and All-Defensive Team), and Deonte Billups took home Horizon League Sixth Man of the Year. Coach Coffman was named Horizon League Coach of the Year.</p>
+  <p class="txt rv"><b style="color:var(--paper)">2016 — Summit League Champions.</b> League title, Coach of the Year for Coffman, Summit League Player of the Year for Max Landis, and the program's first NIT appearance.</p>
+  <div class="gal rv">
+    <div class="slot" style="aspect-ratio:3/4"><img src="img/hl-banner.png" alt="2022 Horizon League Regular Season Champions banner" style="object-fit:contain; background:#000"></div>
+    <div class="slot" style="aspect-ratio:3/4"><img src="img/summit-banner.png" alt="2016 Summit League Champions banner" style="object-fit:contain; background:#000"></div>
+  </div>
+  <div class="slotcap rv">The banners don't lie</div>
+
+  <h3 class="sub rv" style="font-size:clamp(34px, 7vw, 52px); margin-top:70px;">HISTORIC <span style="color:var(--paper)">WINS.</span></h3>
+  <p class="txt rv"><b style="color:var(--paper)">2016:</b> Upset <b style="color:var(--paper)">#3-ranked Indiana</b> on national television in front of a record crowd of 12,000+ at the Coliseum. <b style="color:var(--paper)">2017:</b> Went to Bloomington and beat Indiana again, 92–72 — on their floor. <b style="color:var(--paper)">2025-26:</b> Walked into Notre Dame and won 72–69. And the list keeps growing.</p>
+
+  <div class="video rv" data-video="hype"><div class="ph">THE NOTRE DAME WIN</div></div>
+  <div class="slotcap rv">Notre Dame, 2025-26 — press play</div>
+
+  <div class="slot rv" style="margin-top:30px"><img src="img/iu-celebration.jpg" alt="Fort Wayne celebrates beating #3 Indiana"></div>
+  <div class="slotcap rv">The night we beat #3 Indiana</div>
+
+  <div class="gal rv">
+    <div class="slot"><img src="img/chest-bump-iu.jpg" alt="Celebrating against Indiana in 2017"></div>
+    <div class="slot"><img src="img/iu-317.jpg" alt="Against #3 Indiana at the Coliseum"></div>
+    <div class="slot"><img src="img/calhoun-iu.jpg" alt="Beating Indiana"></div>
+    <div class="slot"><img src="img/iu-bloomington.jpg" alt="At Indiana in Bloomington"></div>
+  </div>
+  <div class="slotcap rv">Beating Indiana never gets old</div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ STYLE OF PLAY ============ -->
+<section id="style">
+  <div class="kick rv">Style of Play</div>
+  <h2 class="rv">FAST. EFFICIENT.<br><span class="g">LETHAL FROM THREE.</span></h2>
+  <p class="lead rv">We play <b style="color:var(--paper)">FAST</b>, we're <b style="color:var(--paper)">EFFICIENT</b>, we <b style="color:var(--paper)">SHOOT</b> the basketball from three as well as anyone in the country, we utilize our <b style="color:var(--paper)">POST</b>, and most importantly — we <b style="color:var(--paper)">SHARE THE BASKETBALL</b>. If you can play, the ball will find you.</p>
+
+  <!-- UPDATE ANNUALLY: national rankings -->
+  <div class="ranks rv">
+    <div class="rank"><div class="no">ONLY</div><div class="tx"><b>Team in the NCAA to shoot 50% FG and 40% from three</b> in the same season (2020-21)</div></div>
+    <div class="rank"><div class="no">#2</div><div class="tx"><b>In the NCAA in effective FG%</b> 2020-21 (58.2%)</div></div>
+    <div class="rank"><div class="no">#2</div><div class="tx"><b>In the NCAA in threes made per game</b> since 2015 (9.8)</div></div>
+    <div class="rank"><div class="no">#3</div><div class="tx"><b>In the NCAA in points per game</b> 2016–19 (83.9)</div></div>
+    <div class="rank"><div class="no">#7</div><div class="tx"><b>In the NCAA in 3PT%</b> since 2016 (37.1%)</div></div>
+    <div class="rank"><div class="no">#9</div><div class="tx"><b>In the NCAA in effective FG%</b> since 2015 (54.6%)</div></div>
+    <div class="rank"><div class="no">#17</div><div class="tx"><b>In the NCAA in points per game</b> since 2015 (78.4)</div></div>
+    <div class="rank"><div class="no">#17</div><div class="tx"><b>In the NCAA in 2PT FG%</b> (54.1%)</div></div>
+  </div>
+
+</section>
+
+<div class="div"></div>
+
+<!-- ============ PLAYER DEVELOPMENT ============ -->
+<section id="develop">
+  <div class="kick rv">Player Development</div>
+  <h2 class="rv">WE DON'T JUST RECRUIT YOU.<br><span class="g">WE BUILD YOU.</span></h2>
+  <p class="lead rv">Strength program, nutrition plan, fueling station, and a development staff that tracks everything. The proof isn't a promise — it's on the scale and in the box score. Two program legends, freshman year vs. senior year:</p>
+
+  <div class="devgrid rv">
+    <div class="dev">
+      <div class="pimg"><img src="img/konchar-dev.jpg" alt="John Konchar attacking for Purdue Fort Wayne"></div>
+      <div class="nm">John Konchar</div>
+      <div class="tagline">Walked in with one D-I offer · Walked out an NBA player</div>
+      <div class="only">Only player in NCAA history with <b>2,000 points, 1,000 rebounds, 500 assists and 250 steals</b></div>
+      <div class="grow"><div class="lbl">Points per game</div><div class="arc">13.0 <span>→</span> 19.5</div><div class="delta">+6.5</div></div>
+      <div class="grow"><div class="lbl">Body weight</div><div class="arc">162 <span>→</span> 210</div><div class="delta">+48 LBS</div></div>
+    </div>
+    <div class="dev">
+      <div class="pimg"><img src="img/godfrey-dev.jpg" alt="Jarred Godfrey leading the break at Minnesota"></div>
+      <div class="nm">Jarred Godfrey</div>
+      <div class="tagline">Freshman role player · All-time leading scorer · Pro</div>
+      <div class="only">Only player in NCAA history with <b>2,150 points, 600 rebounds, 400 assists, 250 threes and 200 steals</b></div>
+      <div class="grow"><div class="lbl">Points per game</div><div class="arc">6.8 <span>→</span> 17.8</div><div class="delta">+11.0</div></div>
+      <div class="grow"><div class="lbl">Body weight</div><div class="arc">173 <span>→</span> 198</div><div class="delta">+25 LBS</div></div>
+    </div>
+  </div>
+  <p class="txt rv">That's muscle added in our weight room, on our nutrition plan — and it's why one of them is on an NBA roster and the other is our all-time leading scorer earning pro money in Europe.</p>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ KONCHAR: FORT WAYNE TO THE NBA ============ -->
+<section id="konchar">
+  <div class="kick rv">The Proof</div>
+  <h2 class="rv">FORT WAYNE<br>TO THE <span class="g">NBA.</span></h2>
+  <p class="lead rv">John Konchar came here from West Chicago with exactly one Division I offer — ours. He left as the most productive player in program history, signed with the Memphis Grizzlies, and is now in his seventh NBA season with the Utah Jazz. An NBA player, made in Fort Wayne. That's not a story we tell recruits. It's a fact we show them.</p>
+
+  <div class="slot rv" style="aspect-ratio:3/4; max-width:560px; margin-left:auto; margin-right:auto;"><img src="img/konchar-nba.jpg" alt="John Konchar rises for a jumper for the Memphis Grizzlies"></div>
+  <div class="slotcap rv" style="text-align:center">Memphis Grizzlies · photo: Joe Murphy, NBAE via Getty Images</div>
+
+  <div class="ranks rv">
+    <div class="rank"><div class="no">2019</div><div class="tx"><b>Undrafted — didn't matter.</b> Signed a two-way deal with Memphis and earned a roster spot</div></div>
+    <div class="rank"><div class="no">#3</div><div class="tx"><b>Among all NBA rookies in PER</b> his first season</div></div>
+    <div class="rank"><div class="no">5.0</div><div class="tx"><b>Rookie-year Box Plus-Minus</b> — on a statistical list with Giannis, LeBron, Luka and Jokić</div></div>
+    <div class="rank"><div class="no">$18.5M</div><div class="tx"><b>Three-year contract extension</b> signed with Memphis in 2023</div></div>
+    <div class="rank"><div class="no">2</div><div class="tx"><b>NBA triple-doubles since 2022</b> — two more than Shai Gilgeous-Alexander over the same span</div></div>
+  </div>
+
+  <div class="slot rv"><img src="img/konchar-jazz.jpg" alt="John Konchar with the Utah Jazz, wearing number 55"></div>
+  <div class="slotcap rv">Year 7 in the league — Utah Jazz, still wearing the 55 he wore in Fort Wayne</div>
+
+  <div class="gal fit rv">
+    <div class="slot"><img src="img/konchar-jokic.jpg" alt="Konchar finishing at the rim against the Denver Nuggets"></div>
+    <div class="slot"><img src="img/konchar-ad.jpg" alt="Konchar contesting Anthony Davis at the rim"></div>
+    <div class="slot"><img src="img/konchar-tripdub.jpg" alt="TSN graphic: Konchar triple-double — 11 points, 11 rebounds, 10 assists, 5 steals"></div>
+    <div class="slot"><img src="img/konchar-shai.jpg" alt="Graphic: triple-doubles since 2022 — John Konchar 2, Shai Gilgeous-Alexander 0"></div>
+  </div>
+  <div class="slotcap rv">Finishing on the Nuggets · rim-to-rim with Anthony Davis · an 11-11-10 triple-double · yes, that graphic is real</div>
+
+  <div class="slot rv" style="aspect-ratio:auto"><img src="img/konchar-bigten.jpg" alt="Big Ten Network graphic: the NCAA all-time 2,000-point, 1,000-rebound, 400-assist list — Oscar Robertson, Larry Bird, Danny Ferry, Stacey Augmon, John Konchar, Ethan Happ"></div>
+  <div class="slotcap rv">National TV does our recruiting for us — the NCAA's ALL-TIME 2,000 pts / 1,000 reb / 400 ast list: Oscar Robertson… Larry Bird… John Konchar</div>
+
+  <div class="gal rv">
+    <div class="slot"><img src="img/konchar-zion.jpg" alt="Konchar guarding Zion Williamson"></div>
+    <div class="slot"><img src="img/konchar-ucla.jpg" alt="Konchar attacking at UCLA's Pauley Pavilion"></div>
+    <div class="slot"><img src="img/konchar-kids.jpg" alt="Fort Wayne kids in Konchar #46 Grizzlies jerseys"></div>
+    <div class="slot"><img src="img/konchar-mayor.jpg" alt="The City of Fort Wayne honors John Konchar at a press conference with the Mayor"></div>
+  </div>
+  <div class="slotcap rv">Guarding Zion · taking on UCLA at Pauley · Fort Wayne kids wear 46 now · the Mayor threw him a press conference</div>
+
+  <div class="paper rv">
+    <div class="t">He added 48 pounds in our weight room, rewrote our record book, and made the NBA out of Fort Wayne.</div>
+    <div class="s">One Division I offer coming in. Four-time All-Summit League here. NBA paychecks since 2019. The blueprint exists — the next one could be you.</div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ PROS ============ -->
+<section id="pros">
+  <div class="kick rv">The Next Level</div>
+  <h2 class="rv">WE DEVELOP <span class="g">PROS.</span></h2>
+  <p class="lead rv">Konchar isn't a one-off. Guys come here, get developed, get paid — NBA, G-League, and first divisions all over the world. Under Coach Coffman alone, 20+ players have signed professional contracts.</p>
+
+  <!-- UPDATE ANNUALLY: pro count -->
+  <div class="bigstats rv">
+    <div class="bs"><div class="n">29</div><div class="l">Pros in the last 15 years</div></div>
+    <div class="bs"><div class="n">43</div><div class="l">All-conference honors in 16 yrs</div></div>
+  </div>
+
+  <div class="slot rv" style="aspect-ratio:auto"><img src="img/pros-timeline.jpg" alt="Fort Wayne to the pros — every PFW pro from 2011 to 2026"></div>
+  <div class="slotcap rv">Fort Wayne to the pros — every year, somebody signs</div>
+
+  <div class="featpros rv">
+    <div class="pro">
+      <div class="pimg"><img src="img/bello-virtus.jpg" alt="Rasheed Bello in Virtus Bologna gear" style="object-position:center top"></div>
+      <div class="nm">Rasheed Bello</div>
+      <div class="where">EuroLeague · Virtus Bologna (Italy)</div>
+      <div class="why">Signed a multi-year deal with EuroLeague power Virtus Bologna in 2026 — the highest level of basketball outside the NBA. It came after a legendary rookie pro season: 16.9 points and 5.7 assists a night while leading Antwerp to the Belgian treble (league, cup, and BNXT titles). Two years earlier he was leading the Horizon League in steals and earning First Team All-League in a Mastodon uniform.</div>
+    </div>
+    <div class="pro">
+      <div class="pimg"><img src="img/godfrey-boras.jpg" alt="Jarred Godfrey playing professionally" style="object-position:center top"></div>
+      <div class="nm">Jarred Godfrey</div>
+      <div class="where">Pro · BG Göttingen (BBL, Germany)</div>
+      <div class="why">Our all-time leading scorer (2,164 points) and a three-time All-Horizon League selection. Broke into the pros putting up 27 a night in Sweden, and now plays for BG Göttingen in Germany's Basketball Bundesliga. Top-3 in program history in rebounds, threes, steals, assists AND free-throw percentage.</div>
+    </div>
+    <div class="pro">
+      <div class="pimg"><img src="img/scott-pro.jpg" alt="Bryson Scott"></div>
+      <div class="nm">Bryson Scott</div>
+      <div class="where">G-League Draft · Toronto Raptors Org · Europe</div>
+      <div class="why">Fort Wayne kid. 9th in the nation in scoring (22.2 PPG), single-season program scoring record (746 points), All-Summit First Team, and a selection to the NABC Reese's College All-Star Game at the Final Four. Taken by Toronto in the 2018 G-League Draft — one of five Mastodons drafted since 2013.</div>
+    </div>
+    <div class="pro">
+      <div class="pimg"><img src="img/landis-porto.jpg" alt="Max Landis playing professionally in Portugal" style="object-position:center top"></div>
+      <div class="nm">Max Landis</div>
+      <div class="where">Pro · Belgium, Germany, Portugal</div>
+      <div class="why">2016 Summit League Player of the Year, Lou Henson All-American, and #2 in the entire NCAA in 3PT% — behind only Buddy Hield. Worked out for the Pacers, Bucks, Bulls and Jazz before a pro career across Europe.</div>
+    </div>
+    <div class="pro">
+      <div class="pimg"><img src="img/gaines-pro.jpg" alt="Frank Gaines playing professionally" style="object-position:center top"></div>
+      <div class="nm">Frank Gaines</div>
+      <div class="where">G-League · Italy, Poland, Russia, Spain</div>
+      <div class="why">Dropped 22.4 PPG for the Celtics' G-League affiliate — 4th in the entire league — shooting 40% from three, and took home D-League Rookie of the Year AND Most Improved. Played in Italy's first division and ran NBA Summer League with the Pacers, Heat and Thunder.</div>
+    </div>
+    <div class="pro">
+      <div class="nm">The 2024–26 Wave</div>
+      <div class="where">The pipeline doesn't stop</div>
+      <div class="why">Anthony Roberts, Quinton Morton-Robertson, Darius Duffy, Max Helson and Mikale Stevenson — the newest Mastodons earning pro paychecks. Every year, somebody signs.</div>
+    </div>
+  </div>
+
+  <h3 class="sub rv">And the list keeps going</h3>
+  <div class="featpros three rv">
+    <div class="pro small"><div class="nm">Jalon Pipkins</div><div class="where">England</div><div class="why">All-Horizon League Third Team + All-Defensive Team (2022).</div></div>
+    <div class="pro small"><div class="nm">Steve Forbes</div><div class="where">Argentina · Spain</div><div class="why">2x All-Summit First Team, 7th nationally in FG%, Jazz G-League affiliate draft pick.</div></div>
+    <div class="pro small"><div class="nm">Mo Evans</div><div class="where">Hungary</div><div class="why">All-Summit Second Team, Summit League 6th Man of the Year.</div></div>
+    <div class="pro small"><div class="nm">Luis Jacobo</div><div class="where">Spain · Dominican Republic</div><div class="why">All-Summit First Team, 2014 G-League draft pick.</div></div>
+    <div class="pro small"><div class="nm">Joe Edwards</div><div class="where">Finland · Slovenia</div><div class="why">All-Summit honors, worked out for the Chicago Bulls.</div></div>
+    <div class="pro small"><div class="nm">Kason Harrell</div><div class="where">Ireland</div><div class="why">All-Summit honors, repped the league at the Final Four 3x3 National Championship.</div></div>
+    <div class="pro small"><div class="nm">Pierre Bland</div><div class="where">Germany</div><div class="why">All-Summit League + All-Tournament Team.</div></div>
+    <div class="pro small"><div class="nm">Brent Calhoun</div><div class="where">Spain</div><div class="why">101 career wins — the most in program history.</div></div>
+    <div class="pro small"><div class="nm">…and more</div><div class="where">Everywhere</div><div class="why">Chong-Qui (China), Planutis (Romania/Finland/Croatia), McCorkle (Switzerland), Smeathers (Australia), Taylor (Slovenia), Calder (Italy), Graham (Spain), Stewart (Portugal), Carl (Bosnia).</div></div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section id="testimonials">
+  <div class="kick rv">In Their Words</div>
+  <h2 class="rv">DON'T TAKE <span class="g">OUR</span> WORD.</h2>
+  <p class="lead rv">Hear it from the guys who lived it and went pro from here.</p>
+
+  <div class="quote rv">
+    <img class="qimg" src="img/bello-virtus.jpg" alt="Rasheed Bello">
+    <div>
+      <div class="q">"I chose Purdue Fort Wayne because I knew it was a place that I could continue to develop. The play style fit me, the coaches showed me how they could help me improve and I saw the track record of players before me."</div>
+      <div class="who">Rasheed Bello</div>
+      <div class="whosub">EuroLeague · Virtus Bologna</div>
+    </div>
+  </div>
+  <div class="quote rv">
+    <img class="qimg" src="img/godfrey-boras.jpg" alt="Jarred Godfrey">
+    <div>
+      <div class="q">"Purdue Fort Wayne is a second home to me. I'm from Atlanta, but the connections I made in Fort Wayne will last a lifetime. I come up there and run my kid's camp in the summer, I stay in touch with alumni and community leaders and I know that it's a place that I can always come back to."</div>
+      <div class="who">Jarred Godfrey</div>
+      <div class="whosub">All-time leading scorer · BG Göttingen (BBL)</div>
+    </div>
+  </div>
+
+  <div class="video rv" data-video="calder"><div class="ph">MICHAEL CALDER — PLAYER TESTIMONIAL<br>(paste link in VIDEOS at bottom of file)</div></div>
+  <div class="video rv" data-video="landis"><div class="ph">MAX LANDIS — PLAYER TESTIMONIAL<br>(paste link in VIDEOS at bottom of file)</div></div>
+  <div class="video rv" data-video="harrell"><div class="ph">KASON HARRELL — PLAYER TESTIMONIAL<br>(paste link in VIDEOS at bottom of file)</div></div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ SCHEDULE ============ -->
+<section id="schedule">
+  <div class="kick rv">The Stage</div>
+  <h2 class="rv">PLAY A <span class="g">BIG-TIME</span> SCHEDULE.</h2>
+  <p class="lead rv">Every single year we line up against high-major programs — and we don't just show up, we play to win.</p>
+
+  <div class="opps rv">
+    <div class="opp hit"><img src="img/logos/nd.png" alt="">Notre Dame ✓</div>
+    <div class="opp hit"><img src="img/logos/iu.png" alt="">Indiana ✓✓</div>
+    <div class="opp hit"><img src="img/logos/depaul.png" alt="">DePaul ✓</div>
+    <div class="opp"><img src="img/logos/osu.png" alt="">Ohio State</div>
+    <div class="opp"><img src="img/logos/mich.png" alt="">Michigan</div>
+    <div class="opp"><img src="img/logos/ucla.png" alt="">UCLA</div>
+    <div class="opp"><img src="img/logos/uk.png" alt="">Kentucky</div>
+    <div class="opp"><img src="img/logos/purdue.png" alt="">Purdue</div>
+    <div class="opp"><img src="img/logos/msu.png" alt="">Michigan State</div>
+    <div class="opp"><img src="img/logos/gonzaga.png" alt="">Gonzaga</div>
+    <div class="opp"><img src="img/logos/auburn.png" alt="">Auburn</div>
+    <div class="opp"><img src="img/logos/psu.png" alt="">Penn State</div>
+    <div class="opp"><img src="img/logos/pitt.png" alt="">Pittsburgh</div>
+    <div class="opp"><img src="img/logos/utah.png" alt="">Utah</div>
+    <div class="opp"><img src="img/logos/wisc.png" alt="">Wisconsin</div>
+    <div class="opp"><img src="img/logos/iowa.png" alt="">Iowa</div>
+    <div class="opp"><img src="img/logos/xavier.png" alt="">Xavier</div>
+    <div class="opp"><img src="img/logos/marq.png" alt="">Marquette</div>
+  </div>
+
+  <div class="slot rv"><img src="img/ucla-away.jpg" alt="PFW at UCLA's Pauley Pavilion"></div>
+  <div class="slotcap rv">At Pauley Pavilion — UCLA</div>
+
+  <!-- UPDATE ANNUALLY: add newest season at top -->
+  <div class="years rv">
+    <div class="yr"><div class="y">2025-26</div><div class="o"><b>Notre Dame (WON, 72–69)</b>, Ohio State, Utah, Grand Canyon, Saint Louis</div></div>
+    <div class="yr"><div class="y">2024-25</div><div class="o">Notre Dame, UCF, Penn State, Michigan</div></div>
+    <div class="yr"><div class="y">2023-24</div><div class="o">Pittsburgh, <b>DePaul (WON)</b></div></div>
+    <div class="yr"><div class="y">2022-23</div><div class="o">Michigan, Northwestern</div></div>
+    <div class="yr"><div class="y">2021-22</div><div class="o">Minnesota</div></div>
+    <div class="yr"><div class="y">2019-20</div><div class="o">UNLV, Ohio State, Iowa State</div></div>
+    <div class="yr"><div class="y">2018-19</div><div class="o">UCLA, Ohio State, Dayton</div></div>
+    <div class="yr"><div class="y">2017-18</div><div class="o">8 postseason teams and 5 league champions on one schedule</div></div>
+  </div>
+
+  <p class="txt rv"><b style="color:var(--paper)">Recent opponents:</b> Indiana, Purdue, Kentucky, UCLA, Michigan State, Notre Dame, Utah, Georgia Tech, Xavier, Marquette, Wisconsin, Nebraska, Gonzaga, Auburn, Cincinnati, Iowa, Washington State, Arkansas, Dayton, San Francisco and Illinois.</p>
+
+  <h3 class="sub rv">Everybody's watching</h3>
+  <div class="ranks rv">
+    <div class="rank"><div class="no"><img src="img/logos/espn-red.svg" alt="ESPN" style="height:34px; display:block;"></div><div class="tx"><b>Every home game and every Horizon League game</b> airs on the ESPN family of networks</div></div>
+    <div class="rank"><div class="no">11.5M</div><div class="tx"><b>TV households in the league footprint</b> — over 10% of the entire country</div></div>
+    <div class="rank"><div class="no">900K</div><div class="tx"><b>Viewers watched 15 million minutes</b> of Horizon League basketball in a single season; 415K watched the championship game alone</div></div>
+  </div>
+
+  <div class="paper rv">
+    <div class="t">The Horizon League is an <span style="white-space:nowrap">NBA pipeline. <img src="img/logos/nba.svg" alt="NBA" style="height:46px; vertical-align:middle; margin-left:6px; background:#131211; padding:5px 9px;"></span></div>
+    <div class="s">24 league players taken in the NBA Draft. 45 have played in the NBA — Gordon Hayward, Kendrick Nunn, Norris Cole, Shelvin Mack, Alfonso McKinnie. Butler made two Final Fours while in this league. This conference gets guys to the next level.</div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ TRAVEL ============ -->
+<section id="travel">
+  <div class="kick rv">See The World</div>
+  <h2 class="rv">WE TAKE<br><span class="g">INTERNATIONAL TRIPS.</span></h2>
+  <p class="lead rv">This program plays — and lives — beyond Indiana.</p>
+  <div class="checks rv">
+    <div class="chk">Portugal & Spain preseason tour — three games against European pro teams</div>
+    <div class="chk">FC Barcelona match at Camp Nou</div>
+    <div class="chk">Bike tour of Barcelona, castle tours in Lisbon</div>
+    <div class="chk">Beach days in Spain, boat tour in Lisbon</div>
+    <div class="chk">Cancun Challenge — Thanksgiving hoops in Riviera Maya</div>
+  </div>
+  <div class="slot rv"><img src="img/cancun-new.jpg" alt="Bobby Planutis driving by Emoni Bates at the Cancun Challenge" style="object-position:center top"></div>
+  <div class="slotcap rv">Bobby Planutis driving by Emoni Bates in the Cancun Challenge — Riviera Maya</div>
+  <div class="gal rv">
+    <div class="slot"><img src="img/camp-nou.jpg" alt="PFW players at an FC Barcelona match at Camp Nou"></div>
+    <div class="slot"><img src="img/sagrada.jpg" alt="The team at the Sagrada Família in Barcelona"></div>
+    <div class="slot"><img src="img/dons-abroad.jpg" alt="The whole team above the Atlantic with the #DonsAbroad flag"></div>
+    <div class="slot"><img src="img/bike-tour.jpg" alt="Team bike tour through Barcelona"></div>
+  </div>
+  <div class="slotcap rv">Camp Nou · Sagrada Família · the Atlantic coast · Barcelona by bike — #DonsAbroad</div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ FACILITIES ============ -->
+<section id="facilities">
+  <div class="kick rv">Where You'll Work</div>
+  <h2 class="rv">PRO <span class="g">FACILITIES.</span></h2>
+  <p class="lead rv">Game nights at the Allen County War Memorial Coliseum — 8,500+ for basketball with state-of-the-art video boards, sky-boxes, luxury suites and spacious locker rooms. A 12,000-person record crowd showed up when we beat #3 Indiana. And the history runs deep: it's the same building where the Detroit Pistons franchise was born — they started as the Fort Wayne Pistons.</p>
+
+  <div class="slot rv"><img src="img/coliseum.jpg" alt="Packed house at the Allen County War Memorial Coliseum"></div>
+  <div class="slotcap rv">Game night at the Coliseum</div>
+
+  <h3 class="sub rv">The $20 million athletic center</h3>
+  <div class="gal rv">
+    <div class="slot"><img src="img/gates-aerial.jpg" alt="Hilliard Gates Sports Center and Purdue Athletics Center aerial view"></div>
+    <div class="slot"><img src="img/fieldhouse.jpg" alt="Lutheran Health Fieldhouse indoor courts and track"></div>
+  </div>
+  <div class="slotcap rv">The Gates Sports Center + Lutheran Health Fieldhouse</div>
+  <div class="video rv" data-video="gates"><div class="ph">GATES CENTER COURT — VIDEO</div></div>
+  <div class="checks rv">
+    <div class="chk">3-court practice facility with 24/7 keypad access</div>
+    <div class="chk">Dr. Dish shooting machines</div>
+    <div class="chk">Dedicated weight room + fueling station</div>
+    <div class="chk">Academic resource center in-building</div>
+    <div class="chk">Film / video conference room</div>
+    <div class="chk">Basketball offices + team locker room</div>
+    <div class="chk">Recreation building next door: 3 more courts + indoor track</div>
+  </div>
+
+  <div class="slot rv"><img src="img/locker-room.jpg" alt="PFW Mastodons locker room"></div>
+  <div class="slotcap rv">The locker room</div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ HOUSING ============ -->
+<section id="housing">
+  <div class="kick rv">Where You'll Live</div>
+  <h2 class="rv">THE BEST HOUSING<br><span class="g">IN THE COUNTRY.</span></h2>
+  <p class="lead rv">Luxury apartments all four years. Nobody shares a bedroom. Nobody shares a bathroom. Most college players can't say either.</p>
+  <div class="checks rv">
+    <div class="chk">Your own bedroom + your own bathroom</div>
+    <div class="chk">Walk-in closet</div>
+    <div class="chk">In-unit washer & dryer</div>
+    <div class="chk">Full kitchen, fully furnished</div>
+    <div class="chk">WiFi included</div>
+    <div class="chk">Outdoor gas grill</div>
+    <div class="chk">Upperclassmen: outdoor pool & clubhouse with game room + workout facilities</div>
+  </div>
+  <div class="slot rv" style="aspect-ratio:4/3"><img src="img/student-housing.jpg" alt="PFW student housing — full kitchen, living room, private bedroom and bathroom"></div>
+  <div class="video rv" data-video="housing"><div class="ph">CAMPUS HOUSING — VIDEO TOUR</div></div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ ACADEMICS ============ -->
+<section id="academics">
+  <div class="kick rv">The Degree</div>
+  <h2 class="rv">A <span class="g">PURDUE</span> DEGREE.</h2>
+  <p class="lead rv">Your future is limitless with the name recognition of a Purdue degree. That name on your diploma opens doors for the rest of your life — a Big Ten-recognized degree, ranked #5 public university by US News and #4 best-value school by the Wall Street Journal, with top-10 engineering and top-50 business programs.</p>
+
+  <div class="slot rv" style="aspect-ratio:auto"><img src="img/academics.png" alt="Academic excellence — power of the Purdue brand: #10 public university, #27 among all US universities, top 100 global"></div>
+
+  <div class="bigstats rv">
+    <div class="bs"><div class="n">3.0<span>+</span></div><div class="l">Team GPA, 13 straight years</div></div>
+    <div class="bs"><div class="n">2<span>x</span></div><div class="l">NCAA APR Public Recognition Awards (top 10% nationally)</div></div>
+    <div class="bs"><div class="n">185</div><div class="l">Degree programs</div></div>
+  </div>
+
+  <p class="txt rv">And it comes with a campus built for actually learning: 9,000 students on 600 acres — big-school resources with a small-school feel — a <b style="color:var(--paper)">22:1 student-to-professor ratio</b>, 200 academic options, and a dedicated academic resource center inside our own athletic building. Our locker room handles its business.</p>
+  <div class="slot rv"><img src="img/cap-gown.jpg" alt="Mastodons in caps and gowns at graduation with Coach Coffman"></div>
+  <div class="slotcap rv">The photo that matters most</div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ FORT WAYNE ============ -->
+<section id="city">
+  <div class="kick rv">The City</div>
+  <h2 class="rv">FORT WAYNE IS A <span class="g">PRO CITY.</span></h2>
+  <p class="lead rv">Indiana's second-largest city — 300,000+ people, ranked the 48th best city to live in America, among the safest cities in the country, and a top place to raise a family. Big-city amenities with small-town convenience, within an easy drive of six major cities: Indianapolis, Chicago, Detroit, Cincinnati, Cleveland and Louisville.</p>
+
+  <div class="slot rv"><img src="img/downtown.jpg" alt="Downtown Fort Wayne"></div>
+  <div class="slotcap rv">Downtown Fort Wayne</div>
+
+  <div class="checks rv">
+    <div class="chk">Pro hockey (Komets) + pro baseball (TinCaps) in town</div>
+    <div class="chk">Ranked the #1 minor-league sports market in America out of 240</div>
+    <div class="chk">Largest indoor mall in Indiana one mile from campus — plus Dave & Buster's and restaurants everywhere</div>
+    <div class="chk">The Coliseum hosts concerts and events year-round — you live where the city plays</div>
+    <div class="chk">Sports-management internships and summer jobs with the pro teams — our program has direct TinCaps connections</div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ============ COACHES ============ -->
+<section id="staff">
+  <div class="kick rv">Who You'll Play For</div>
+  <h2 class="rv">THE <span class="g">STAFF.</span></h2>
+  <div class="staff rv">
+    <div class="coach">
+      <div class="pimg"><img src="img/staff-coffman.jpg" alt="Jon Coffman"></div>
+      <div class="nm">Jon Coffman</div>
+      <div class="role">Head Coach · Winningest coach in PFW D-I history</div>
+      <div class="bio">215–170 entering his thirteenth season as head coach. Named 2022 Horizon League Coach of the Year, 2016 Summit League Coach of the Year, and a finalist for the 2016 Hugh Durham National Coach of the Year award. His teams have ranked in the top 25 nationally in 17 different offensive efficiency categories, and more than 20 of his players have signed professional contracts. The program has twice earned NCAA APR Public Recognition Awards for academic excellence during his tenure.</div>
+    </div>
+    <div class="coach">
+      <div class="pimg"><img src="img/staff-sims.jpg" alt="Ryan Sims"></div>
+      <div class="nm">Ryan Sims</div>
+      <div class="role">Assistant Coach</div>
+      <div class="bio">Entering his 17th season with the program. A Fort Wayne native, he was named to the NABC's Under Armour 30-Under-30 team recognizing the top young coaches in college basketball. He played collegiately at Bowling Green State and the University of Indianapolis, where he shot 89% from the free-throw line as a senior.</div>
+    </div>
+    <div class="coach">
+      <div class="pimg"><img src="img/staff-blaylock.jpg" alt="Adam Blaylock"></div>
+      <div class="nm">Adam Blaylock</div>
+      <div class="role">Assistant Coach</div>
+      <div class="bio">Entering his ninth season. Leads the program's frontcourt development and serves as its compliance liaison and scheduling contact. Previously the top assistant at Panola College, where his teams won 70 games in three seasons and 17 players advanced to Division I programs.</div>
+    </div>
+    <div class="coach">
+      <div class="pimg zoom"><img src="img/staff-wolf.jpg" alt="Mike Wolf"></div>
+      <div class="nm">Mike Wolf</div>
+      <div class="role">Assistant Coach</div>
+      <div class="bio">Entering his eighth season with the Mastodons. Directs the program's video playbook and player development program, and works daily with the guards. Previously served as Director of Basketball Operations at Purdue Fort Wayne and at Mount St. Mary's, and as an assistant coach at Emory & Henry College, where he helped the program to its first 20-win season in 24 years.</div>
+    </div>
+    <div class="coach">
+      <div class="pimg"><img src="img/staff-ambrose.jpg" alt="Matthew Ambrose"></div>
+      <div class="nm">Matthew Ambrose</div>
+      <div class="role">Assistant Coach · Director of Player Development</div>
+      <div class="bio">Oversees individualized skill instruction, player workouts, and on- and off-court development, helping produce three All-Horizon League First Team performers over the last two seasons. Began his playing career at the University of Indianapolis before transferring to Calvin University, where he served as team captain and helped the program reach the 2024 NCAA Division III Elite Eight. A native of Kildeer, Illinois, he holds a master's degree from Purdue Fort Wayne.</div>
+    </div>
+    <div class="coach">
+      <div class="pimg"><img src="img/staff-parker.jpg" alt="Dylan Parker"></div>
+      <div class="nm">Dylan Parker</div>
+      <div class="role">Assistant Coach · Director of Recruiting Operations</div>
+      <div class="bio">Joins the Mastodons after four seasons at Ohio State under Chris Holtmann, where he served as the program's head student manager as a senior. He has also volunteered with USA Basketball's Junior National Team program. A native of Seattle, Washington, he earned a bachelor's degree in finance from Ohio State and a master's degree in Educational Leadership from Santa Clara University.</div>
+    </div>
+  </div>
+
+  <h3 class="sub rv" style="text-align:center; margin-top:44px;">Graduate Assistants</h3>
+  <div class="staff support rv">
+    <div class="coach">
+      <div class="pimg"><img src="img/staff-dejurnett.jpg" alt="Johnathan DeJurnett"></div>
+      <div class="nm">Johnathan DeJurnett</div>
+      <div class="role">Graduate Assistant</div>
+      <div class="bio">Returns to the program after a decorated playing career at Purdue Fort Wayne, where he was a contributor on the 2022 Horizon League regular-season championship and CBI teams and the 2024 CIT runner-up squad. Assists with player development, scouting, video, and day-to-day operations. A native of Memphis, Tennessee, he holds a bachelor's degree in Organizational Leadership.</div>
+    </div>
+    <div class="coach">
+      <div class="pimg"><img src="img/staff-huber.jpg" alt="Jason Huber"></div>
+      <div class="nm">Jason Huber</div>
+      <div class="role">Graduate Assistant</div>
+      <div class="bio">Joins the staff after completing his playing career at Monmouth College, where he earned the 2024-25 Midwest Conference Elite 20 Award and Academic All-District honors while starting all 27 games for a 20-win squad. The son of a high school coach, he brings a strong basketball background and a reputation as an excellent teacher of the game.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center" class="rv">
+    <a class="btnlink" data-link="tour" href="#" style="display:none">TAKE THE VIRTUAL CAMPUS TOUR</a>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section id="cta">
+  <div class="slot rv" style="margin:0 0 60px"><img src="img/lockerroom-celebration.jpg" alt="Mastodons celebrate in the locker room"></div>
+  <div class="kick rv">Your Move</div>
+  <h2 class="rv">COME BE <span class="g">NEXT.</span></h2>
+  <p class="lead rv" style="margin:0 auto;">The wins, the pros, the degree, the housing, the city — it's all here. All that's missing is you.</p>
+  <div class="hash" style="margin-top:36px;">Text the coach who sent you this.</div>
+  <div class="hash" style="font-size:22px; margin-top:14px; color:var(--gold);">#GoDons · @MastodonMBB</div>
+</section>
+
+<footer>Purdue Fort Wayne Men's Basketball · Horizon League</footer>
+
+<script>
+  /* ============================================================
+     VIDEOS — paste YouTube/Hudl links between the quotes below.
+     YouTube "watch" links are converted to embeds automatically.
+     tour = virtual campus tour URL (shows a button in Staff section)
+     ============================================================ */
+  const VIDEOS = {
+    hype:    "vid/notre-dame-hype.mp4",
+    calder:  "https://www.youtube.com/watch?v=on2_qfwOO0I",
+    landis:  "https://www.youtube.com/watch?v=7IBr80OE0-w",
+    harrell: "https://www.youtube.com/watch?v=Ua6YUxrr9p8",
+    housing: "vid/campus-housing.mp4",
+    gates:   "vid/gates-center-court.mov",
+    tour:    ""
+  };
+
+  function embedURL(u){
+    const yt = u.match(/(?:youtu\.be\/|v=)([\w-]{6,})/);
+    return yt ? 'https://www.youtube.com/embed/' + yt[1] : u;
+  }
+  // poster thumbnails so local videos don't show a black box before play
+  const POSTERS = {
+    hype:    "img/poster-hype.jpg",
+    housing: "img/poster-housing.jpg",
+    gates:   "img/poster-gates.jpg"
+  };
+  document.querySelectorAll('.video').forEach(v => {
+    const u = VIDEOS[v.dataset.video];
+    if (!u) return;
+    if (/\.(mp4|mov|m4v|webm)(\?|$)/i.test(u)) {
+      const p = POSTERS[v.dataset.video] ? ' poster="' + POSTERS[v.dataset.video] + '"' : '';
+      v.innerHTML = '<video controls preload="none" playsinline' + p + ' style="width:100%;height:100%;object-fit:cover" src="' + u + '"></video>';
+    } else
+      v.innerHTML = '<iframe src="' + embedURL(u) + '" allowfullscreen loading="lazy"></iframe>';
+  });
+  const tour = document.querySelector('[data-link="tour"]');
+  if (VIDEOS.tour) { tour.href = VIDEOS.tour; tour.style.display = 'inline-block'; }
+
+  // Personalization: send recruits ?n=FirstName for a personal greeting
+  const n = new URLSearchParams(location.search).get('n');
+  if (n) document.getElementById('greet').textContent = n.replace(/[^A-Za-z .'-]/g,'') + ' — this is where you belong.';
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+  }), { threshold:.15 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  // Animate chart bars when visible
+  const co = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('i').forEach(b => b.style.width = b.dataset.w + '%');
+      co.unobserve(e.target);
+    }
+  }), { threshold:.3 });
+  co.observe(document.getElementById('chart'));
+</script>
+</body>
+</html>
