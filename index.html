@@ -731,8 +731,7 @@
   <div class="kick rv">Your Move</div>
   <h2 class="rv">COME BE <span class="g">NEXT.</span></h2>
   <p class="lead rv" style="margin:0 auto;">The wins, the pros, the degree, the housing, the city — it's all here. All that's missing is you.</p>
-  <a class="btnlink" id="ctaBtn" href="#" style="display:none">TEXT THE COACH WHO SENT YOU THIS</a>
-  <div class="hash" id="ctaFallback" style="margin-top:36px;">Text the coach who sent you this.</div>
+  <div class="hash" style="margin-top:36px;">Welcome to the Fort.</div>
   <div class="hash" style="font-size:22px; margin-top:14px; color:var(--gold);">#GoDons · @MastodonMBB</div>
 </section>
 
@@ -777,23 +776,8 @@
   if (VIDEOS.tour) { tour.href = VIDEOS.tour; tour.style.display = 'inline-block'; }
 
   // Personalization: send recruits ?n=FirstName for a personal greeting
-  const params = new URLSearchParams(location.search);
-  const n = params.get('n');
+  const n = new URLSearchParams(location.search).get('n');
   if (n) document.getElementById('greet').textContent = n.replace(/[^A-Za-z .'-]/g,'') + ' — this is where you belong.';
-
-  // CTA: send ?c=<phone> (and optional ?cn=<LastName>) → a live "text the coach" button.
-  // Number lives in the link, not the page, so it stays staff-generic. No ?c = plain-text fallback.
-  const cphone = (params.get('c') || '').replace(/[^0-9]/g,'');
-  if (cphone) {
-    const cn = (params.get('cn') || '').replace(/[^A-Za-z .'-]/g,'').trim();
-    const rn = (n || '').replace(/[^A-Za-z .'-]/g,'').trim();
-    const body = encodeURIComponent((rn ? rn + " here — " : "") + "just saw the PFW page. Let's talk.");
-    const btn = document.getElementById('ctaBtn');
-    btn.href = 'sms:' + cphone + '?&body=' + body;
-    btn.textContent = cn ? ('TEXT COACH ' + cn.toUpperCase()) : 'TEXT THE COACH WHO SENT YOU THIS';
-    btn.style.display = 'inline-block';
-    document.getElementById('ctaFallback').style.display = 'none';
-  }
 
   // Reveal on scroll
   const io = new IntersectionObserver(es => es.forEach(e => {
